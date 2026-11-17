@@ -1,0 +1,18 @@
+# Dữ liệu người chơi trên máy, không đưa lên Git
+data/
+
+# Kết quả build giao diện (build.bat / npm run build tạo lại mỗi lần)
+backend/src/main/resources/static/
+
+# Công cụ và editor
+.vscode/
+.idea/
+.superpowers/
+.github/modernize/
+
+# Kế hoạch thực hiện nội bộ
+docs/superpowers/plans/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
