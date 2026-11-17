@@ -1,0 +1,408 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --fg: #1b1f2a;
+  --muted: #667085;
+  --border: #dfe3ec;
+  --accent: #3b5bdb;
+  --accent-fg: #ffffff;
+  --pos: #1a7f4b;
+  --neg: #c92a2a;
+  --danger: #c92a2a;
+  --warn: #b7791f;
+  --focus: #3b5bdb55;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12141a;
+    --surface: #1b1e27;
+    --fg: #e8eaf0;
+    --muted: #9aa3b5;
+    --border: #2c3140;
+    --accent: #7c93ff;
+    --accent-fg: #0b0d14;
+    --pos: #4cd08a;
+    --neg: #ff7b7b;
+    --danger: #ff7b7b;
+    --warn: #f0b84a;
+    --focus: #7c93ff55;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.45;
+}
+
+a {
+  color: var(--accent);
+}
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 12px;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  margin: 8px 0 0;
+}
+
+.btn {
+  font: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+.btn-danger {
+  color: var(--danger);
+}
+
+.btn-small {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+input[type='text'],
+input[type='number'] {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--fg);
+  min-width: 0;
+}
+
+input:focus-visible,
+.btn:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--fg);
+}
+
+select:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Form tạo bàn */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.field > span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.player-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0 12px;
+}
+
+/* Danh sách bàn */
+.game-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.game-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-list li + li {
+  border-top: 1px solid var(--border);
+}
+
+.game-list a {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 4px;
+  text-decoration: none;
+  color: var(--fg);
+}
+
+.game-list a:hover strong {
+  color: var(--accent);
+}
+
+.pos {
+  color: var(--pos);
+}
+
+.neg {
+  color: var(--neg);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trang bàn chơi */
+.game-header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 12px;
+}
+
+.game-header h1 {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.status {
+  font-size: 0.85rem;
+}
+
+.status.online {
+  color: var(--pos);
+}
+
+/* Chỉ hiện khi mất kết nối kéo dài, để tránh nhấp nháy lúc mới tải trang. */
+.status.offline {
+  color: var(--warn);
+  opacity: 0;
+  animation: appear 0s 1.5s forwards;
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Bảng điểm. Vùng bọc là phần tử cuộn cả hai chiều để `sticky` vẫn hoạt động khi 12 người phải cuộn ngang. */
+.table-wrap {
+  --head-row: 44px;
+  overflow: auto;
+  max-height: calc(100vh - 150px);
+  max-height: calc(100dvh - 150px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.score-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.score-table th,
+.score-table td {
+  padding: 8px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  min-width: 84px;
+  background: var(--surface);
+}
+
+/* Hàng tên + hàng TỔNG dính trên cùng. */
+.score-table thead th,
+.score-table thead td {
+  position: sticky;
+  z-index: 2;
+}
+
+/* Chiều cao hàng tên phải đúng --head-row (nội dung thấp hơn) để hàng TỔNG dính ngay bên dưới. */
+.score-table thead tr.names > th {
+  top: 0;
+  height: var(--head-row);
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.score-table thead tr.totals > * {
+  top: var(--head-row);
+  height: var(--head-row);
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--border);
+}
+
+/* Cột đầu (nhãn ván) dính bên trái khi cuộn ngang. */
+.score-table th[scope='row'],
+.score-table thead tr.names > th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.score-table thead th[scope='row'],
+.score-table thead tr.names > th:first-child {
+  z-index: 3;
+}
+
+.name-btn {
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.name-btn:hover {
+  background: var(--border);
+}
+
+.names input {
+  width: 100%;
+  padding: 2px 6px;
+  text-align: center;
+}
+
+.score-table td.zero {
+  color: var(--muted);
+}
+
+.score-table td.actions {
+  min-width: 130px;
+  white-space: nowrap;
+}
+
+.score-table td.actions .btn + .btn {
+  margin-left: 6px;
+}
+
+tr.input-row th,
+tr.input-row td {
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cell input {
+  width: 100%;
+  min-width: 52px;
+  text-align: center;
+}
+
+.cell input.auto::placeholder {
+  color: var(--accent);
+  font-weight: 600;
+  opacity: 1;
+}
+
+.cell input.invalid {
+  border-color: var(--danger);
+}
+
+.sign {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  font: inherit;
+  line-height: 1;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sign:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+
+.hint-row td {
+  text-align: left;
+  padding-top: 0;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--warn);
+}
